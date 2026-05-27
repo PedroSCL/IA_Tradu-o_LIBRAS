@@ -1,74 +1,193 @@
 # 🤟 Tradutor de Libras para Áudio com IA
 
-**Disciplina:** Inteligência Artificial  
-**Tipo:** Projeto Prático — Protótipo Funcional
+Projeto de Inteligência Artificial capaz de reconhecer sinais em Libras utilizando visão computacional e converter o resultado em áudio em tempo real.
 
 ---
 
-## Objetivo
+# 📌 Objetivo
 
-Protótipo de sistema baseado em IA que utiliza a câmera do dispositivo para reconhecer, em tempo real, palavras em Língua Brasileira de Sinais (Libras) e convertê-las em áudio (Text-to-Speech).
+Desenvolver um protótipo funcional que:
 
-## Pipeline de IA
+- capture movimentos pela câmera;
+- extraia landmarks corporais e das mãos com MediaPipe;
+- utilize uma rede neural LSTM para reconhecer sinais;
+- converta o resultado em texto e áudio (Text-to-Speech).
 
+---
+
+# 🧠 Pipeline da IA
+
+```text
+Câmera → MediaPipe → Landmarks → LSTM → Texto → Áudio
 ```
-Câmera → MediaPipe (landmarks) → LSTM (classificação) → Texto → TTS (áudio)
-```
 
-## Estrutura do Projeto
+---
 
-```
+# 📂 Estrutura do Projeto
+
+```text
 libras_tradutor/
 ├── data/
-│   ├── raw/                  # Vídeos brutos coletados
-│   └── processed/            # Landmarks extraídos (CSV/NPY)
+│   ├── raw/                  # Dados brutos (não incluídos)
+│   ├── videos/               # Vídeos originais (não incluídos)
+│   └── processed/            # Dados processados (.npy)
+│
 ├── src/
-│   ├── data_collection/      # Etapa 1: Coleta de dados com câmera
-│   ├── preprocessing/        # Etapa 2: Extração de landmarks (MediaPipe)
-│   ├── model/                # Etapa 3: Treino da rede LSTM
-│   ├── evaluation/           # Etapa 4: Métricas e avaliação
-│   └── interface/            # Etapa 5+6: Interface + síntese de voz
-├── models/                   # Modelos treinados (.h5 / .keras)
+│   ├── data_collection/      # Coleta de dados
+│   ├── preprocessing/        # Extração de landmarks
+│   ├── model/                # Treinamento da LSTM
+│   ├── evaluation/           # Avaliação do modelo
+│   └── interface/            # Interface em tempo real
+│
+├── models/                   # Modelos treinados
 ├── notebooks/                # Análises exploratórias
-├── reports/                  # Relatório final + figuras
+├── reports/                  # Relatórios e figuras
 ├── requirements.txt
 └── README.md
 ```
 
-## Instalação
+---
+
+# ⚙️ Requisitos
+
+- Python 3.11+
+- Webcam
+- Windows/Linux
+
+---
+
+# 🚀 Instalação Completa
+
+## 1. Clone o repositório
+
+```bash
+git clone https://github.com/SEUUSUARIO/libras-tradutor.git
+```
+
+---
+
+## 2. Entre na pasta do projeto
+
+```bash
+cd libras-tradutor
+```
+
+---
+
+# 🐍 Criando o Ambiente Virtual (venv)
+
+## Windows (PowerShell)
+
+```bash
+python -m venv .venv311
+```
+
+Ative:
+
+```bash
+.venv311\Scripts\activate
+```
+
+---
+
+## Linux / Mac
+
+```bash
+python3 -m venv .venv311
+source .venv311/bin/activate
+```
+
+---
+
+# 📦 Instalar Dependências
+
+Com o ambiente virtual ativado:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Como Executar
+---
 
-### 1. Coletar dados
+# 📥 Dados Processados
+
+Os arquivos de treinamento não estão incluídos no repositório devido ao tamanho.
+
+Baixe os arquivos:
+
+- `X.npy`
+- `y.npy`
+
+e coloque em:
+
+```text
+data/processed/
+```
+
+---
+
+# 🧪 Como Executar
+
+---
+
+## 1. Coletar dados
+
+Captura vídeos/imagens pela câmera.
+
 ```bash
 python src/data_collection/collect_data.py
 ```
 
-### 2. Pré-processar (extrair landmarks)
+---
+
+## 2. Extrair landmarks
+
+Converte vídeos/imagens em landmarks numéricos utilizando MediaPipe.
+
 ```bash
 python src/preprocessing/extract_landmarks.py
 ```
 
-### 3. Treinar o modelo LSTM
+Os arquivos gerados serão:
+
+```text
+data/processed/X.npy
+data/processed/y.npy
+```
+
+---
+
+## 3. Treinar o modelo LSTM
+
 ```bash
 python src/model/train.py
 ```
 
-### 4. Avaliar o modelo
+O modelo treinado será salvo em:
+
+```text
+models/
+```
+
+---
+
+## 4. Avaliar o modelo
+
 ```bash
 python src/evaluation/evaluate.py
 ```
 
-### 5. Rodar a interface em tempo real
+---
+
+## 5. Executar a interface em tempo real
+
 ```bash
 python src/interface/app.py
 ```
 
-## Sinais Suportados (vocabulário inicial)
+---
+
+# 🧾 Sinais Suportados
 
 | Sinal | Label |
 |-------|-------|
@@ -79,17 +198,45 @@ python src/interface/app.py
 | Sim | sim |
 | Não | nao |
 
-## Tecnologias
+---
 
-- **MediaPipe** — extração de landmarks das mãos/corpo
-- **TensorFlow / Keras** — modelo LSTM
-- **OpenCV** — captura de vídeo
-- **pyttsx3 / gTTS** — síntese de voz (TTS)
-- **scikit-learn** — métricas de avaliação
-- **Matplotlib / Seaborn** — visualizações
+# 🛠 Tecnologias Utilizadas
 
-## Referências
+- TensorFlow / Keras
+- MediaPipe
+- OpenCV
+- NumPy
+- scikit-learn
+- Matplotlib
+- pyttsx3 / gTTS
 
-- [IA Libras](https://ialibras.com.br/)
-- [MediaPipe Docs](https://mediapipe.readthedocs.io/)
-- Hand Talk — ISLR (Isolated Sign Language Recognition)
+---
+
+# 📊 Modelo Utilizado
+
+O projeto utiliza uma rede neural recorrente do tipo LSTM (Long Short-Term Memory), adequada para reconhecimento de padrões temporais em sequências de landmarks extraídos dos sinais em Libras.
+
+---
+
+# 📌 Observações
+
+- As pastas `data/raw/` e `data/videos/` não estão incluídas devido ao tamanho elevado dos arquivos.
+- O ambiente virtual `.venv311/` também não é incluído no repositório.
+- O modelo pode ser retreinado utilizando novos dados e landmarks.
+
+---
+
+# 📚 Referências
+
+- MediaPipe
+- TensorFlow
+- OpenCV
+- IA Libras
+- Hand Talk
+
+---
+
+# 👨‍💻 Autor
+
+Pedro Henrique  
+Projeto acadêmico desenvolvido para a disciplina de Inteligência Artificial.
