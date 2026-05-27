@@ -1,0 +1,55 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "python",
+    "editor.formatOnSave": true,
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true
+    }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "1. Coletar Dados",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/data_collection/collect_data.py",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "2. Pré-processamento",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/preprocessing/extract_landmarks.py",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "3. Treinar Modelo",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/model/train.py",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "4. Avaliar Modelo",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/evaluation/evaluate.py",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "5. Interface em Tempo Real",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/interface/app.py",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}

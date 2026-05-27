@@ -1,0 +1,31 @@
+# Ambiente virtual
+.venv/
+.venv311/
+venv/
+
+# Variáveis de ambiente
+.env
+
+# Cache
+__pycache__/
+*.pyc
+
+# VSCode
+.vscode/
+
+# Dataset bruto
+data/raw/
+data/videos/
+
+# Dados processados grandes
+data/processed/
+
+# Arquivos compactados
+*.zip
+*.rar
+*.7z
+
+
+# Sistema
+.DS_Store
+Thumbs.db

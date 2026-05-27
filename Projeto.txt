@@ -1,0 +1,137 @@
+
+1
+
+Zoom automático
+ 
+Escopo de Projeto: Tradutor de Libras para Áudio com IA 
+Disciplina: Inteligência Artificial 
+Curso:  
+Tipo de Trabalho: Projeto Prático (Desenvolvimento de Protótipo) 
+1. Objetivo Principal 
+Desenvolver um protótipo funcional de um sistema baseado em Inteligência Artificial que 
+utilize  a  câmera  de  um  dispositivo  (celular  ou  computador)  para  reconhecer,  em  tempo 
+real, frases ou palavras expressas em Língua Brasileira de Sinais (Libras) e as converta em 
+áudio  (síntese  de  voz).  O  objetivo  é  criar  uma  ponte  de  comunicação  bidirecional  para 
+pessoas com deficiência auditiva que se comunicam em Libras, permitindo que interajam 
+com pessoas que não compreendem a língua. 
+2. Descrição do Problema e Relevância 
+Mais de 10 milhões de pessoas surdas no Brasil enfrentam barreiras diárias de 
+comunicação. Atividades simples, como uma ligação telefônica ou um atendimento 
+presencial, tornam-se desafios sem a presença de um intérprete . Este projeto visa propor 
+uma  solução  tecnológica  para  reduzir  essa  dependência,  utilizando  a  onipresença  de 
+smartphones e computadores para empoderar o usuário com deficiência auditiva, dando-
+lhe autonomia para se comunicar . 
+3. Escopo do Projeto e Funcionalidades 
+O aluno deverá entregar um protótipo que contemple as seguintes funcionalidades 
+básicas, formando um pipeline completo de IA: 
+1. Captura  de  Vídeo: Acesso  à  câmera  do  dispositivo  para  capturar  os  gestos  do 
+usuário em tempo real. 
+2. Rastreamento Corporal (Feature Extraction): Utilizar uma biblioteca de visão 
+computacional  para  mapear  os  principais  pontos  de  referência  (landmarks)  do 
+corpo do usuário, com foco especial nas mãos e braços. Isso converte o vídeo em 
+dados numéricos que a IA pode processar . 
+3. Classificação  dos  Sinais  (Modelo  de  IA): Um  modelo  de  aprendizado  de  máquina 
+(provavelmente supervisionado) deve ser capaz de interpretar os dados extraídos e 
+classificá-los  em  um  dos  sinais  de  Libras  para  os  quais  foi  treinado  (ex:  "Olá", 
+"Água", "Preciso de ajuda"). 
+4. Geração  de  Texto: A  palavra  ou  frase  classificada  deve  ser  exibida  na  tela  do 
+dispositivo. 
+5. Síntese  de  Voz  (Text-to-Speech): O  texto  gerado  deve  ser  convertido  em  áudio 
+utilizando um mecanismo de síntese de voz, que será reproduzido para o 
+interlocutor ouvinte. 
+ 
+ 
+ 
+ 
+4. Tecnologias e Recursos de IA Utilizados 
+Para atingir o objetivo, o projeto deve se basear nas seguintes tecnologias e conceitos de 
+IA,  que  são  amplamente  utilizados  em  soluções  de  mercado  como  a  IA  Libras  e  o  Hand 
+Talk . 
+4.1. Visão Computacional e Extração de Características 
+• Tecnologia Sugerida: MediaPipe (Google). 
+• Função: Responsável por rastrear o corpo humano. A solução ideal utiliza o 
+MediaPipe para detectar até 190+ pontos de referência (landmarks) nas mãos, 
+braços, rosto e corpo. Esses pontos são coordenadas numéricas (x, y, z) que 
+descrevem a posição e o movimento, abstraindo a necessidade de processar a 
+imagem bruta . 
+• Vantagem: Processamento ocorre localmente no dispositivo (client-side), 
+garantindo mais privacidade e velocidade. 
+4.2. Modelo de Aprendizagem de Máquina (Classificação) 
+• Abordagem: Aprendizado Supervisionado. 
+• Funcionamento: O modelo será treinado com um dataset contendo sequências 
+de landmarks (entrada) rotuladas com o nome do sinal correspondente em Libras 
+(saída). 
+• Tecnologia Sugerida: TensorFlow ou PyTorch. Redes neurais profundas, 
+como LSTM (Long Short-Term Memory) ou GRU (Gated Recurrent Units), são 
+particularmente eficazes para interpretar sequências de movimentos ao longo do 
+tempo . 
+• Métrica de Desempenho: A acurácia do modelo será medida pela porcentagem de 
+vezes que o sinal classificado corresponde ao sinal real executado no conjunto de 
+testes. 
+4.3. Síntese de Voz 
+• Tecnologia Sugerida: APIs de Text-to-Speech, como a Azure Speech (Microsoft) ou 
+a biblioteca de TTS do próprio sistema operacional . 
+• Função: Converter o texto resultante da classificação em áudio natural. 
+4.4. Infraestrutura (Edge Computing vs. Cloud) 
+• Arquitetura Recomendada: Processamento Local (Edge). 
+• Motivo: Para garantir uma conversa fluida, o tempo de resposta deve ser mínimo 
+(menos de 50ms). Depender exclusivamente da nuvem pode gerar atrasos 
+(latência) ou falhar por instabilidade de internet. O ideal é que a etapa de 
+reconhecimento dos gestos ocorra localmente . 
+ 
+ 
+ 
+5. Etapas de Desenvolvimento (Cronograma Sugerido) 
+Etapa Descrição Tecnologias Envolvidas 
+1. Aquisição de 
+Dados 
+Criar ou obter um dataset de vídeos de 
+pessoas sinalizando um conjunto pré-
+definido de palavras em Libras. 
+Câmera, ferramentas de 
+rotulagem. 
+2. Pré-
+processamento 
+Processar os vídeos com o MediaPipe para 
+extrair os landmarks e salvá-los como 
+arquivos de sequência numérica (ex: CSV 
+ou TFRecord). 
+Python, MediaPipe, Pandas . 
+3. Treinamento do 
+Modelo 
+Construir e treinar uma rede neural (ex: 
+LSTM) com os dados de landmarks para 
+que ela aprenda a associar os movimentos 
+às palavras. 
+TensorFlow/PyTorch, Scikit-
+learn . 
+4. Avaliação e 
+Ajuste 
+Testar o modelo com novos dados para 
+calcular a acuracia e outras métricas 
+(precisão, recall). Ajustar hiperparâmetros 
+para melhorar o desempenho. 
+Scikit-learn, Matplotlib. 
+5. Desenvolvimento 
+da Interface 
+Criar uma interface simples (web ou 
+aplicativo) que acesse a câmera, execute o 
+modelo em tempo real e mostre/ fale o 
+resultado. 
+JavaScript/HTML5 (para 
+web), React Native/Flutter 
+(para app). 
+6. Integração da Voz Adicionar a funcionalidade de síntese de 
+voz para reproduzir o texto traduzido. 
+Web Speech API, Azure TTS, 
+etc. . 
+ 
+6. Resultados Esperados e Métricas de Sucesso 
+Ao final do projeto, o aluno deverá apresentar um relatório contendo: 
+1. Objetivo Principal: Conforme descrito na seção 1. 
+2. Tecnologias Utilizadas: Detalhamento das bibliotecas, frameworks e modelos 
+empregados, justificando as escolhas com base na pesquisa realizada (ex: 
+"Optamos pelo MediaPipe por sua eficiência em tempo real..."). 
+3. Recursos de IA e Funcionamento: Explicação didática de como o pipeline de IA 
+funciona (entrada -> extração de features -> classificação -> saída), incluindo 
+diagramas de blocos. 
