@@ -108,17 +108,19 @@ pip install -r requirements.txt
 ```
 
 ---
-
 # 📥 Dados Processados
 
 Os arquivos de treinamento não estão incluídos no repositório devido ao tamanho.
 
-Baixe os arquivos:
+Baixe os arquivos abaixo:
 
-- `X.npy`
-- `y.npy`
+- X.npy
+- y.npy
 
-e coloque em:
+Link:
+https://drive.google.com/drive/folders/11kP-HvVccio20pZzreGlBPeQHD-F3HJp?usp=sharing
+
+Depois coloque os arquivos em:
 
 ```text
 data/processed/
