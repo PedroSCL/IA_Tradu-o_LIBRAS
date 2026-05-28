@@ -46,5 +46,5 @@ RANDOM_STATE   = 42
 MODEL_FILENAME = "libras_lstm.keras"
 
 # ── Interface ───────────────────────────────────────────────────────────────
-PREDICTION_THRESHOLD = 0.3   # confiança mínima para aceitar predição
+PREDICTION_THRESHOLD = 0.96   # confiança mínima para aceitar predição
 TTS_LANG             = "pt"   # idioma do gTTS
