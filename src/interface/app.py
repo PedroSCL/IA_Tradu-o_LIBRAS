@@ -68,8 +68,8 @@ SPOKEN_TEXT = {
 }
 
 # ── Parâmetros anti-falso-positivo ─────────────────────────────────────────────
-VOTES_REQUIRED  = 1    # sinal precisa aparecer N vezes seguidas para ser aceito
-MIN_HAND_FRAMES = 10    # mínimo de frames com mão detectada no buffer para predizer
+VOTES_REQUIRED  = 3    # sinal precisa aparecer N vezes seguidas para ser aceito
+MIN_HAND_FRAMES = 40    # mínimo de frames com mão detectada no buffer para predizer
 
 
 def speak(text: str):
@@ -180,7 +180,7 @@ def run():
     confidence    = 0.0
     last_spoken   = ""
     last_speak_t  = 0.0
-    SPEAK_COOLDOWN = 2.5
+    SPEAK_COOLDOWN = 4.0
     hand_detected  = False
 
     print("[INÍCIO] Interface iniciada! Pressione Q para sair.\n")
@@ -239,6 +239,9 @@ def run():
                                 word_history.append(current_word)
                                 last_spoken  = current_word
                                 last_speak_t = now
+                                frame_buffer.clear()
+                                hand_buffer.clear()
+                                vote_buffer.clear()
                     else:
                         vote_buffer.clear()
                 else:
