@@ -25,7 +25,7 @@ NUM_CLASSES = len(CLASSES)
 
 # ── Coleta de dados ─────────────────────────────────────────────────────────
 SEQUENCES_PER_CLASS = 30   # quantas sequências (vídeos) por sinal
-FRAMES_PER_SEQUENCE = 30   # frames por sequência
+FRAMES_PER_SEQUENCE = 60   # frames por sequência
 
 # ── MediaPipe ───────────────────────────────────────────────────────────────
 # Cada frame produz: 21 landmarks mão esquerda + 21 mão direita + 33 pose = 75
@@ -33,18 +33,18 @@ FRAMES_PER_SEQUENCE = 30   # frames por sequência
 NUM_LANDMARKS_PER_FRAME = 225
 
 # ── Modelo LSTM ─────────────────────────────────────────────────────────────
-LSTM_UNITS_1   = 64
-LSTM_UNITS_2   = 128
-LSTM_UNITS_3   = 64
-DENSE_UNITS    = 64
-DROPOUT_RATE   = 0.2
+LSTM_UNITS_1   = 32
+LSTM_UNITS_2   = 64
+LSTM_UNITS_3   = 32
+DENSE_UNITS    = 32
+DROPOUT_RATE   = 0.4
 LEARNING_RATE  = 1e-3
-BATCH_SIZE     = 16
+BATCH_SIZE     = 8
 EPOCHS         = 100
-TEST_SIZE      = 0.34
+TEST_SIZE      = 0.20
 RANDOM_STATE   = 42
 MODEL_FILENAME = "libras_lstm.keras"
 
 # ── Interface ───────────────────────────────────────────────────────────────
-PREDICTION_THRESHOLD = 0.96   # confiança mínima para aceitar predição
+PREDICTION_THRESHOLD = 0.5  # confiança mínima para aceitar predição
 TTS_LANG             = "pt"   # idioma do gTTS

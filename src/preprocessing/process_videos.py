@@ -8,78 +8,100 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from config import DATA_RAW
 
-VIDEOS_DIR = os.path.join("data", "videos")
-
 mp_holistic = mp.solutions.holistic
 
 
 def extract_keypoints(results):
 
-    pose = np.array(
-        [[lm.x, lm.y, lm.z] for lm in results.pose_landmarks.landmark]
-    ).flatten() if results.pose_landmarks else np.zeros(33 * 3)
+    pose = (
+        np.array(
+            [[lm.x, lm.y, lm.z]
+             for lm in results.pose_landmarks.landmark]
+        ).flatten()
+        if results.pose_landmarks
+        else np.zeros(99)
+    )
 
-    lh = np.array(
-        [[lm.x, lm.y, lm.z] for lm in results.left_hand_landmarks.landmark]
-    ).flatten() if results.left_hand_landmarks else np.zeros(21 * 3)
+    lh = (
+        np.array(
+            [[lm.x, lm.y, lm.z]
+             for lm in results.left_hand_landmarks.landmark]
+        ).flatten()
+        if results.left_hand_landmarks
+        else np.zeros(63)
+    )
 
-    rh = np.array(
-        [[lm.x, lm.y, lm.z] for lm in results.right_hand_landmarks.landmark]
-    ).flatten() if results.right_hand_landmarks else np.zeros(21 * 3)
+    rh = (
+        np.array(
+            [[lm.x, lm.y, lm.z]
+             for lm in results.right_hand_landmarks.landmark]
+        ).flatten()
+        if results.right_hand_landmarks
+        else np.zeros(63)
+    )
 
     return np.concatenate([pose, lh, rh])
 
 
-videos = [v for v in os.listdir(VIDEOS_DIR) if v.endswith(".mp4")]
+classes = [
+    d for d in os.listdir(DATA_RAW)
+    if os.path.isdir(os.path.join(DATA_RAW, d))
+]
 
-print(f"[INFO] {len(videos)} vídeos encontrados")
-
+print(f"[INFO] Classes encontradas: {classes}")
 
 with mp_holistic.Holistic(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5
 ) as holistic:
 
-    for idx, video_name in enumerate(videos):
+    for label in classes:
 
-        print(f"\n[{idx+1}/{len(videos)}] Processando: {video_name}")
+        class_dir = os.path.join(DATA_RAW, label)
 
-        label = video_name.split("_")[0].lower()
+        videos = [
+            v for v in os.listdir(class_dir)
+            if v.lower().endswith((".mp4", ".avi", ".mov"))
+        ]
 
-        video_path = os.path.join(VIDEOS_DIR, video_name)
+        print(f"\n[{label}] {len(videos)} vídeos encontrados")
 
-        cap = cv2.VideoCapture(video_path)
+        for idx, video_name in enumerate(videos):
 
-        frames_data = []
+            video_path = os.path.join(class_dir, video_name)
 
-        while cap.isOpened():
+            cap = cv2.VideoCapture(video_path)
 
-            ret, frame = cap.read()
+            frames_data = []
 
-            if not ret:
-                break
+            while cap.isOpened():
 
-            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                ret, frame = cap.read()
 
-            results = holistic.process(image)
+                if not ret:
+                    break
 
-            keypoints = extract_keypoints(results)
+                image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            frames_data.append(keypoints)
+                results = holistic.process(image)
 
-        cap.release()
+                frames_data.append(
+                    extract_keypoints(results)
+                )
 
-        save_dir = os.path.join(DATA_RAW, label, str(idx))
+            cap.release()
 
-        os.makedirs(save_dir, exist_ok=True)
+            save_dir = os.path.join(class_dir, str(idx))
+            os.makedirs(save_dir, exist_ok=True)
 
-        save_path = os.path.join(save_dir, "keypoints.npy")
+            np.save(
+                os.path.join(save_dir, "keypoints.npy"),
+                np.array(frames_data, dtype=np.float32)
+            )
 
-        np.save(
-            save_path,
-            np.array(frames_data, dtype=np.float32)
-        )
-
-        print(f"[SALVO] {save_path}")
+            print(
+                f"[{idx+1}/{len(videos)}] "
+                f"{video_name} -> {len(frames_data)} frames"
+            )
 
 print("\n[CONCLUÍDO] Todos os vídeos foram processados.")

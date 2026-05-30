@@ -38,7 +38,10 @@ def load_dataset() -> tuple[np.ndarray, np.ndarray]:
 
         cls_ok = 0
 
-        sequences = sorted(os.listdir(cls_path))
+        sequences = sorted([
+            d for d in os.listdir(cls_path)
+            if os.path.isdir(os.path.join(cls_path, d))
+        ])
 
         for seq in sequences:
 
@@ -54,21 +57,18 @@ def load_dataset() -> tuple[np.ndarray, np.ndarray]:
 
             frames = np.load(seq_path)
 
-            # pad/truncate
-            if len(frames) < FRAMES_PER_SEQUENCE:
+            # Reamostragem uniforme para exatamente 30 frames
 
-                pad = np.zeros(
-                    (
-                        FRAMES_PER_SEQUENCE - len(frames),
-                        NUM_LANDMARKS_PER_FRAME
-                    ),
-                    dtype=np.float32
-                )
+            if len(frames) == 0:
+                continue
 
-                frames = np.vstack([frames, pad])
+            indices = np.linspace(
+                0,
+                len(frames) - 1,
+                FRAMES_PER_SEQUENCE
+            ).astype(int)
 
-            else:
-                frames = frames[:FRAMES_PER_SEQUENCE]
+            frames = frames[indices]
 
             X.append(frames)
             y.append(label_map[cls])

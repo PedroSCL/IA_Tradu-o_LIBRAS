@@ -68,25 +68,25 @@ def build_model() -> tf.keras.Model:
     Output: (NUM_CLASSES,)  — probabilidades softmax
     """
     model = Sequential([
-        LSTM(LSTM_UNITS_1, return_sequences=True,
-             input_shape=(FRAMES_PER_SEQUENCE, NUM_LANDMARKS_PER_FRAME),
-             name="lstm_1"),
-        BatchNormalization(),
-        Dropout(DROPOUT_RATE),
+    LSTM(
+        64,
+        input_shape=(FRAMES_PER_SEQUENCE, NUM_LANDMARKS_PER_FRAME)
+    ),
 
-        LSTM(LSTM_UNITS_2, return_sequences=True, name="lstm_2"),
-        BatchNormalization(),
-        Dropout(DROPOUT_RATE),
+    Dropout(0.3),
 
-        LSTM(LSTM_UNITS_3, return_sequences=False, name="lstm_3"),
-        BatchNormalization(),
-        Dropout(DROPOUT_RATE),
+    Dense(
+        32,
+        activation="relu"
+    ),
 
-        Dense(DENSE_UNITS, activation="relu", name="dense_1"),
-        Dropout(DROPOUT_RATE),
+    Dropout(0.3),
 
-        Dense(NUM_CLASSES, activation="softmax", name="output"),
-    ], name="LibrasLSTM")
+    Dense(
+        NUM_CLASSES,
+        activation="softmax"
+    )
+])
 
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE),

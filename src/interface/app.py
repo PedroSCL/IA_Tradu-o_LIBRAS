@@ -62,17 +62,14 @@ mp_holistic = mp.solutions.holistic
 mp_drawing  = mp.solutions.drawing_utils
 
 SPOKEN_TEXT = {
-    "ola":       "Olá!",
-    "obrigado":  "Obrigado!",
-    "agua":      "Água",
-    "ajuda":     "Preciso de ajuda!",
-    "sim":       "Sim",
-    "nao":       "Não",
+    "amarelo": "Amarelo",
+    "banco": "Banco",
+    "espelho": "Espelho",
 }
 
 # ── Parâmetros anti-falso-positivo ─────────────────────────────────────────────
-VOTES_REQUIRED  = 3     # sinal precisa aparecer N vezes seguidas para ser aceito
-MIN_HAND_FRAMES = 20    # mínimo de frames com mão detectada no buffer para predizer
+VOTES_REQUIRED  = 1    # sinal precisa aparecer N vezes seguidas para ser aceito
+MIN_HAND_FRAMES = 10    # mínimo de frames com mão detectada no buffer para predizer
 
 
 def speak(text: str):
@@ -217,6 +214,9 @@ def run():
                 if hand_frames >= MIN_HAND_FRAMES:
                     seq   = np.expand_dims(np.array(frame_buffer, dtype=np.float32), axis=0)
                     probs = model.predict(seq, verbose=0)[0]
+                    print("\nProbabilidades:")
+                    for i, p in enumerate(probs):
+                        print(f"{CLASSES[i]}: {p:.4f}")
                     pred_idx   = int(np.argmax(probs))
                     pred_conf  = float(probs[pred_idx])
 
